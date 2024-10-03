@@ -39,7 +39,6 @@ type state struct {
 
 func authorize(w http.ResponseWriter, r *http.Request) {
 	params := fillAuthorizeParams(r)
-
 	validationErr := validateAuthorizeParams(params)
 
 	if validationErr != nil {

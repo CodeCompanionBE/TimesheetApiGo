@@ -1,7 +1,6 @@
 package main
 
 import (
-	api "codecompanion/timesheet/api/internal"
 	Env "codecompanion/timesheet/api/internal/env"
 	OAuthHandlers "codecompanion/timesheet/api/internal/oauth/handlers"
 	"fmt"
@@ -10,13 +9,13 @@ import (
 
 func main() {
 	// Start server and make db connection
-	api := api.NewApi(http.NewServeMux())
+	router := http.NewServeMux()
 
 	// Register routes
-	OAuthHandlers.RegisterRoutes(api.Router)
+	OAuthHandlers.RegisterRoutes(router)
 
 	// Start server
-	err := http.ListenAndServe(fmt.Sprintf(":%s", Env.Vars.Port), api.Router)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", Env.Vars.Port), router)
 
 	if err != nil {
 		fmt.Println("Error starting server")

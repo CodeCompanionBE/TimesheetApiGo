@@ -1,20 +1,12 @@
-package api
+package Db
 
 import (
 	Env "codecompanion/timesheet/api/internal/env"
 	"database/sql"
 	"fmt"
-	"net/http"
-
-	_ "github.com/lib/pq"
 )
 
-type API struct {
-	Router *http.ServeMux
-	DB     *sql.DB
-}
-
-func NewApi(router *http.ServeMux) *API {
+func initDb() *sql.DB {
 	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", Env.Vars.DbHost, Env.Vars.DbPort, Env.Vars.DbUser, Env.Vars.DbPassword, Env.Vars.DbName))
 
 	if err != nil {
@@ -29,8 +21,7 @@ func NewApi(router *http.ServeMux) *API {
 		panic(pingErr)
 	}
 
-	return &API{
-		Router: router,
-		DB:     db,
-	}
+	return db
 }
+
+var Db *sql.DB = initDb()
